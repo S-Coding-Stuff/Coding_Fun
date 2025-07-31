@@ -22,7 +22,7 @@ bitmap = """....................................................................
                     **     *                    *
 ...................................................................."""
 
-print('Bitmap Message by Samuel Grant')
+print('Bitmap Message')
 print('Enter the message to display with the bitmap:')
 message = input('> ')
 if message == '':
