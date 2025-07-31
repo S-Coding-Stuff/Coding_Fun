@@ -18,18 +18,19 @@ class Restaurant:
     def add_number_served(self):
         self.number_served += 1
 
-class IceCreamStand:
-    def __init__(self, restaurant_name, cuisine_type, number_served=0,):
-        super().__init__(restaurant_name, cuisine_type, number_served=0)
+class IceCreamStand(Restaurant):
+    def __init__(self, restaurant_name, cuisine_type, number_served=0):
+        super().__init__(restaurant_name, cuisine_type, number_served)
         self.flavours = ['Chocolate', 'Strawberry', 'Vanilla', 'Mint Choc', 'Honeycomb']
 
     def print_flavours(self):
-        print(self.flavours[i] for i in range(0, len(self.flavours)))
+        print(flavour for flavour in self.flavours)
 
 
 restaurant1 = Restaurant('McDonalds', 'American')
 restaurant2 = Restaurant('Wagamama', 'Japanese')
 restaurant3 = Restaurant('The Dirty Onion', 'Irish')
+ice_cream_stand = IceCreamStand('Ice Cream Shop', 'Ice Cream')
 
 def main_menu(restaurant):
     print(f'Welcome to {restaurant.restaurant_name}!\n'
@@ -56,4 +57,4 @@ def main_menu(restaurant):
         print(f'[{restaurant.restaurant_name}] - {restaurant.number_served} People Served Today')
 
 if __name__ == "__main__":
-    main_menu(restaurant3)
+    main_menu(ice_cream_stand)
