@@ -1,5 +1,7 @@
 from Restaurant import *
 
+# Test Comment
+
 restaurant1 = Restaurant('McDonalds', 'American')
 restaurant2 = Restaurant('Wagamama', 'Japanese')
 restaurant3 = Restaurant('The Dirty Onion', 'Irish')
