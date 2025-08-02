@@ -1,7 +1,5 @@
 from Restaurant import *
 
-# Test Comment
-
 restaurant1 = Restaurant('McDonalds', 'American')
 restaurant2 = Restaurant('Wagamama', 'Japanese')
 restaurant3 = Restaurant('The Dirty Onion', 'Irish')
@@ -16,7 +14,7 @@ def main_menu(restaurant):
 
     while True:
         choice = input("Enter your choice (1-4):")
-        
+
         match choice:
             case '1':
                 restaurant.describe_restaurant()
