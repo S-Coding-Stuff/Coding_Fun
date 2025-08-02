@@ -16,18 +16,19 @@ def main_menu(restaurant):
 
     while True:
         choice = input("Enter your choice (1-4):")
-
-        if choice == '1':
-            restaurant.describe_restaurant()
-        elif choice == '2':
-            restaurant.set_number_served()
-        elif choice == '3':
-            restaurant.add_number_served()
-        elif choice == '4':
-            print('Goodbye!')
-            break
-        else:
-            print('Invalid Choice, Try Again:')
+        
+        match choice:
+            case '1':
+                restaurant.describe_restaurant()
+            case '2':
+                restaurant.set_number_served()
+            case '3':
+                restaurant.add_number_served()
+            case '4':
+                print('Goodbye!')
+                break
+            case _:
+                print('Invalid Choice, Try Again:')
 
         print(f'[{restaurant.restaurant_name}] - {restaurant.number_served} People Served Today')
 

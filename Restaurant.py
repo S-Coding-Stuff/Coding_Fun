@@ -13,7 +13,7 @@ class Restaurant:
 
     def set_number_served(self):
         num = input("How many customers served today?")
-        self.number_served = num
+        self.number_served = int(num)
 
     def add_number_served(self):
         self.number_served += 1
