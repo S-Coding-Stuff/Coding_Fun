@@ -11,24 +11,24 @@
 #include <chrono>
 
 int screenWidth = 80;
-int screenHeight = 22;
+int screenHeight = 24;
 
 const float R1 = 1;
-const float R2 = 1;
-const float K2 = 5;
-const float K1 = screenWidth*K2*3/(8*(R1+R2));
+const float R2 = 2;
+const float K2 = 10;
+const float K1 = 40;
 bool colors = true;
 
 const float pi = 3.14159265;
 
-float A = 0.1;
-float B = 0.1;
+float A = 0;
+float B = 0;
 
 float theta_spacing = 0.07;
 float phi_spacing = 0.02;
 
 int main() {
-    std::cout << "\x1b[J";
+    std::cout << "\x1b[2J";
     bool loop = true;
     
     while (loop) {
@@ -39,21 +39,25 @@ int main() {
             for (float phi=0; phi < 2*pi; phi += phi_spacing){
                 // x, y, z coordinates for vector
                 float x = (R2+R1*cos(theta))*(cos(B)*cos(phi)+sin(A)*sin(B)*sin(phi))-(R1*cos(A)*sin(B)*sin(theta));
-                float y = (R2+R1*cos(theta)*(cos(phi)*sin(B)-cos(B)*sin(A)*sin(phi)))+(R1*cos(A)*cos(B)*sin(theta));
-                float z = (cos(A)*(R2+R1*cos(theta))*sin(phi))+(R1*sin(A)*sin(theta));
+                float y = (R2 + R1 * cos(theta)) * (cos(phi) * sin(B) - cos(B) * sin(A) * sin(phi)) + R1 * cos(A) * cos(B) * sin(theta);
+                float z = K2 + cos(A) * (R2 + R1 * cos(theta)) * sin(phi) + R1 * sin(A) * sin(theta);
+                float ooz = 1/z; // One Over z
                 
                 // Projection coordinates
-                int x_proj = int((K1*x)/(K2+z));
-                int y_proj = int((K1*y)/(K2+z));
+                int x_proj = int(screenWidth / 2 + K1 * ooz * x);
+                int y_proj = int(screenHeight / 2 - K1 * ooz * y);
                 
-                float lum = (cos(phi)*cos(theta)*sin(B))-(cos(A)*cos(theta)*sin(phi))+(cos(B)*(cos(A)*sin(theta)-cos(theta)*sin(A)*sin(phi)));
+                float lum = cos(phi) * cos(theta) * sin(B) - cos(A) * cos(theta) * sin(phi) + cos(B) * (cos(A) * sin(theta) - cos(theta) * sin(A) * sin(phi));
                 
                 if (lum > 0) {
-                    int position = int((screenWidth/2+x_proj)+(screenHeight/2-y_proj)*screenWidth);
+                    int position = x_proj + y_proj * screenWidth;
                     
                     if (position >= 0 && position < screenHeight * screenWidth){
-                        if (1/z < zBuffer[position]){
-                            int lumIdx = int(lum*8);
+                        if (ooz > zBuffer[position]){
+                            zBuffer[position] = ooz;
+                            int lumIdx = int(lum*10);
+                            if (lumIdx < 0) lumIdx = 0;
+                            if (lumIdx > 11) lumIdx = 11;
                             const char lumChars[] = ".,-~:;=!*#$@";
                             b[position] = lumChars[lumIdx > 11 ? 11 :lumIdx];
                         }
@@ -63,7 +67,7 @@ int main() {
         }
         std::cout << "\x1b[H";
         
-        for (int k = 0; k < screenWidth*screenHeight; k++) {
+        for (int k = 0; k < screenWidth * screenHeight; k++) {
             std::cout << (k % screenWidth ? b[k] : '\n');
         }
         
